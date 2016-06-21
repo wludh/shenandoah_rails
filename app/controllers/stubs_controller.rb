@@ -1,0 +1,3 @@
+class StubsController < ApplicationController
+
+end

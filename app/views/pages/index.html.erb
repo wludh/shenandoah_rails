@@ -12,6 +12,21 @@
 <div class="clear"></div>
 </div>
 
+<div class="search">
+  <%= form_tag root_path, :method => "get" do %>
+    <%= text_field_tag :search, params[:search] %>
+    <%= submit_tag "Search", :name => nil %>
+    <label for='choice'>Search by:</label>
+    <% ['Author', 'Title'].each do |choice| %>
+    <%= radio_button_tag 'choice', choice, @choice == choice%>
+    <%= choice.humanize %>
+    <% end %>
+  <% end %>
+</div>
+
+
+<%= @my_variable %>
+
 <!-- The space to embed the dynamic content. Currently being embedded via iframe stored as an ASPX file on the same server. This file is also pointing at the same CSS file as it linked here. -->
 <div class="embed-div" id="search-div">
     <iframe name="search-frame" src="http://MData1.ad.wlu.edu/ShenandoahExplorerApp/Explore.aspx"></iframe>

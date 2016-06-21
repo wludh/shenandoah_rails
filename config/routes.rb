@@ -55,10 +55,7 @@ Rails.application.routes.draw do
   #   end
 
 get "/pages/:page" => "pages#show"
-# get "/pages/:page", to: "pages#show", as: ':page'
-
-# match 'index', to: 'pages#index', via: [:get], as: :root
+match 'search', to: 'pages#search', via: [:get], as: :search
 match 'about', to: 'pages#about', via: [:get], as: :about
-match 'editions', to: 'pages#editions', via: [:get], as: :editions
 
 end

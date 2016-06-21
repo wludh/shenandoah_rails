@@ -5,11 +5,26 @@ class PagesController < ApplicationController
     end
 
     def index
+        if params[:search] != nil
+            query = params[:search].html_safe
+            @choice = params[:choice]
+            @my_variable = 'a thing goes here' 
+            puts(query) 
+        end    
         render template: 'pages/index'
     end
 
     def about
         render template: 'pages/about'
+    end
+
+    def search
+        if params[:search] != nil
+            @my_variable = 'a thing goes here' 
+            query = params[:search].html_safe
+            puts(query) 
+        end    
+        render template: 'pages/index'
     end
 
     # TODO: query JSON API - this will parse json from a url - http://stackoverflow.com/questions/18581792/ruby-on-rails-and-json-parser-from-url
