@@ -17,7 +17,7 @@ describe "GET" 'index' do
         expect(parsed_query['search']).to have_content('Test search')
     end
 
-    it "should store whether the search is by author" do
+    it "should store in params whether the search is by author" do
         visit root_path
         within '#search-bar' do
             fill_in 'search', :with => 'Test search'
@@ -27,8 +27,8 @@ describe "GET" 'index' do
         parsed_query = CGI::parse(URI.parse(current_url).query)
         expect(parsed_query['choice']).to have_content('Author')
     end
-    
-    it "should store whether the search is by title" do
+
+    it "should store in params whether the search is by title" do
         visit root_path
         within '#search-bar' do
             fill_in 'search', :with => 'Test search'
