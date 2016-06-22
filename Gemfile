@@ -8,7 +8,10 @@ gem 'rails', '4.2.6'
 gem 'twitter-bootstrap-rails'
 gem 'sqlite3'
 
+# Testing
 gem 'rspec-rails', '~> 3.1.0', group: [:development, :test]
+gem 'capybara', group: [:development, :test]
+gem 'cucumber'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'

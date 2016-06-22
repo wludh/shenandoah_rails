@@ -11,10 +11,7 @@ describe PagesController do
         it 'renders the index template' do
             get :index
             expect(response).to render_template("index")
-        end
-        it 'has a search function' 
-        
-
+        end        
         it 'has a date tree' 
     end
 
