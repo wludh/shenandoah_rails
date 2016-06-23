@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+ruby '2.2.3'
 gem 'rails', '4.2.6'
 gem 'puma'
 # Use sqlite3 as the database for Active Record
@@ -10,7 +11,7 @@ gem 'twitter-bootstrap-rails'
 
 group :production do
     gem 'pg'
-    'rails_12factor'
+    gem 'rails_12factor'
 end
 
 group :development do
