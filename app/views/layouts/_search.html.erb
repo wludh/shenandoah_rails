@@ -38,32 +38,45 @@
     <!-- results -->
     <div class="col-md-9">
         <div id="issue_panel">
-            <%= @articles.length %> total search results. <%= link_to "clear search", root_path %>
-            <% @articles.each do |article| %>
-                <h3>Vol. <%= article[:volume]%>, No. <%= article[:issue]%>, <%= article[:date]%></h3>
-                <div class="article" style="padding-left:20px;">
-                    <%= article[:title] %>
-                    <br>
-                    Author:
-                        <%= article[:author]%>
-                    <br>
-                    <% if article[:pages] != nil or article[:pages] != '-' %>
-                    pp.
-                        <%= article[:pages]%>
-                    <br>
-                    <% end %>
-                    Genre:
-                        <%= article[:genre]%>
-                    <br>
-                    Reviewed Works:
-                        <%= article[:reviews]%>
-                    <br>
-                    <% if article[:comments] != nil %>
-                        Notes:
-                            <%= article[:comments]%>
-                        <br>
-                    <% end %>
-                </div>
+            <% if @articles != nil && params.key?(:search) %>
+                <%= @articles.length %> total search results. <%= link_to "clear search", root_path %>
+                <% @articles.each do |article| %>
+                    <h3>
+                        Vol. <%= article[:volume]%>, No. <%= article[:issue]%>, <%= article[:date]%>
+                    </h3>
+                    <div class="article">
+
+                        <% if article.key?(:title) %>
+                            <%= article[:title] %>
+                            <br>
+                        <% end %>
+
+                        <% if article.key?(:author) %>
+                            Author: <%= article[:author] %>
+                            <br>
+                        <% end %>
+
+                        <% if article.key?(:pages) && article[:pages] != '-' %>
+                            pp. <%= article[:pages]%><%puts article[:pages]%>
+                            <br>
+                        <% end %>
+
+                        <% if article.key?(:genre) %>
+                            Genre: <%= article[:genre]%>
+                            <br>
+                        <% end %>
+
+                        <% if article.key?(:reviews) %>
+                            Reviewed Works: <%= article[:reviews]%>
+                            <br>
+                        <% end %>
+
+                        <% if article.key?(:comments) %>
+                            Notes: <%= article[:comments]%>
+                            <br>
+                        <% end %>
+                    </div>
+                <% end %>
             <% end %>
         </div>
     </div>
