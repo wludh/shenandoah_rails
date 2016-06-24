@@ -38,12 +38,4 @@ describe "GET" 'index' do
         parsed_query = CGI::parse(URI.parse(current_url).query)
         expect(parsed_query['choice']).to have_content('keyword')
     end
-
-    it "should connect to the json API"
-    it "should get a response that is JSON from the API"
-    it "should parse that JSON"
-    it "should take a search and query the API with it"
-    it "should get dates from the API"
-    it "should get single issues from the API"
-    it "should get search results from the API"
 end

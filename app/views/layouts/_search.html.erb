@@ -1,6 +1,7 @@
 <div id="contents">
     <!-- search bar -->
     <div class="col-md-3">
+    <%= @dates %>
         <div class="search">
           <%= form_tag root_path, :method => "get", :id => 'search-bar' do %>
             <%= text_field_tag :search, params[:search] %>
@@ -20,7 +21,8 @@
         <div id='date_tree'>
             <table cellspacing="0" rules="all" border="1" id="IssueGridView" style="border-style:None;border-collapse:collapse;">
                 <tbody>
-                <!-- examples of decades -->
+                <!-- format is <tr><td><a>decade/year/issues
+                and they're all just listed one after the other, even if logically they are nested. so the first step is to just list all the dates. then make it so that they're all collapsed. then make it so clicking on the outer layer will expose the inner layers. -->
                     <tr>
                         <td style="border-style:None;">
                             <a id="IssueGridView_DecadeLinkButton_0" href="javascript:__doPostBack(&#39;IssueGridView$ctl02$DecadeLinkButton&#39;,&#39;&#39;)">1950s</a>
@@ -57,7 +59,7 @@
                         <% end %>
 
                         <% if article.key?(:pages) && article[:pages] != '-' %>
-                            pp. <%= article[:pages]%><%puts article[:pages]%>
+                            pp. <%= article[:pages]%>
                             <br>
                         <% end %>
 

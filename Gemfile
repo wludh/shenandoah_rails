@@ -5,6 +5,8 @@ source 'https://rubygems.org'
 ruby '2.2.3'
 gem 'rails', '4.2.6'
 gem 'puma'
+gem 'rufus-scheduler'
+
 # Use sqlite3 as the database for Active Record
 
 gem 'twitter-bootstrap-rails'
