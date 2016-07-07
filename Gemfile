@@ -6,6 +6,7 @@ ruby '2.2.3'
 gem 'rails', '4.2.6'
 gem 'puma'
 gem 'rufus-scheduler'
+gem 'will_paginate'
 
 # Use sqlite3 as the database for Active Record
 

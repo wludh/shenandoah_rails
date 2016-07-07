@@ -1,8 +1,8 @@
 <div id="contents">
     <!-- search bar -->
     <div class="col-md-3">
-    <%= @dates %>
-        <div class="search">
+<!--     <%= @dates %>
+ -->        <div class="search">
           <%= form_tag root_path, :method => "get", :id => 'search-bar' do %>
             <%= text_field_tag :search, params[:search] %>
             <%= submit_tag "Search", :name => nil %>
@@ -11,7 +11,7 @@
             <%= radio_button_tag 'choice', 'author', params[:choice] == 'author' || params[:choice] == nil %>
             <%= 'Author'.humanize %>
             <%= radio_button_tag 'choice', 'keyword', params[:choice] == 'keyword' %>
-            <%= 'Keyword or Phrase'.humanize %>
+            <%= 'Keywords'.humanize %>
           <% end %>
         </div>
 
@@ -19,20 +19,42 @@
         <b>Browse by Issue:</b>
         <!-- date tree -->
         <div id='date_tree'>
-            <table cellspacing="0" rules="all" border="1" id="IssueGridView" style="border-style:None;border-collapse:collapse;">
+            <table cellspacing="0" rules="all" border="1" id="IssueGridView">
                 <tbody>
                 <!-- format is <tr><td><a>decade/year/issues
                 and they're all just listed one after the other, even if logically they are nested. so the first step is to just list all the dates. then make it so that they're all collapsed. then make it so clicking on the outer layer will expose the inner layers. -->
+                <% for decade in @decades%>
                     <tr>
-                        <td style="border-style:None;">
-                            <a id="IssueGridView_DecadeLinkButton_0" href="javascript:__doPostBack(&#39;IssueGridView$ctl02$DecadeLinkButton&#39;,&#39;&#39;)">1950s</a>
+                        <td>
+                        <!-- take current params, add decade to it, and create a url for the newl query  -->
+                            <%= link_to(decade.to_s + 's', url_for(params.merge(:decade => decade.to_s)), class: "decade_link") %>
                         </td>
+                        <% if params[:decade] != nil && params[:decade] == decade.to_s %>
+                            <% for year in @years %>
+                                <tr>
+                                    <td>
+                                        <%= link_to(year.to_s, url_for(params.merge(:year => year.to_s)), class: "year_link") %>
+                                    </td>
+                                </tr>
+                                <% if params[:year] != nil && params[:year] == year.to_s %>
+                                    <% for issue in @issues %>
+                                        <tr>
+                                            <td>
+                                                <%= link_to("Vol. " + issue['Volume'].to_s + ", No. " + issue['Issue'].to_s + ", " + issue['Season'].to_s, url_for(params.merge(:issue_id => issue['ID'].to_s)), class: "issue_link") %>
+                                            </td>
+                                        </tr>
+                                    <% end %>
+                                <%end %>
+                            <% end %>
+                        <% end %>
                     </tr>
-                    <tr>
-                        <td style="border-style:None;">
-                            <a id="IssueGridView_DecadeLinkButton_1" href="javascript:__doPostBack(&#39;IssueGridView$ctl03$DecadeLinkButton&#39;,&#39;&#39;)">1960s</a>
-                        </td>
-                    </tr>
+                <% end %>
+                     <script>
+                        $('.DecadeLink').click(function(){
+                            var decade = Number($( this ).text().slice(0, -1));
+                        });
+                    </script>
+                    <!-- TODO: figure out why in god's name it only works part time if you are loading the JS from another file. Figure out whether you want to pre=load all the dates. or just have them load on clicking. -->
                 </tbody>
             </table>
         </div>
@@ -40,31 +62,39 @@
     <!-- results -->
     <div class="col-md-9">
         <div id="issue_panel">
-            <% if @articles != nil && params.key?(:search) %>
+            <% if params.key?(:issue_id) %>
+                <h3>
+                    <%= "Vol. " + @issue['Volume'].to_s + ", No. " + @issue['Issue'].to_s + ", " + @issue['Season'].to_s %>
+                </h3>
+            <% end %>
+            <% if @articles != nil && (params.key?(:search) || params.key?(:issue_id)) %>
                 <%= @articles.length %> total search results. <%= link_to "clear search", root_path %>
                 <% @articles.each do |article| %>
-                    <h3>
-                        Vol. <%= article[:volume]%>, No. <%= article[:issue]%>, <%= article[:date]%>
-                    </h3>
+                    <%= article %>
+                     <% if params.key?(:search) %>
+                        <h3>
+                            Vol. <%= article[:volume]%>, No. <%= article[:issue]%>, <%= article[:date]%>
+                        </h3>
+                    <% end %>
                     <div class="article">
 
-                        <% if article.key?(:title) %>
-                            <%= article[:title] %>
+                        <% if article.key?('Title') %>
+                            <%= article['Title'] %>
                             <br>
                         <% end %>
 
-                        <% if article.key?(:author) %>
-                            Author: <%= article[:author] %>
+                        <% if article.key?('AuthorID') %>
+                            Author: <%= single_author(article['AuthorID'][0]) %>
                             <br>
                         <% end %>
 
-                        <% if article.key?(:pages) && article[:pages] != '-' %>
-                            pp. <%= article[:pages]%>
+                        <% if article.key?('EndPage') && article.key?('StartPage') %>
+                            pp. <%= article['StartPage'].to_s + '-' + article['EndPage'].to_s %>
                             <br>
                         <% end %>
 
-                        <% if article.key?(:genre) %>
-                            Genre: <%= article[:genre]%>
+                        <% if article.key?('Genre') %>
+                            Genre: <%= article['Genre'].to_set.to_a.to_sentence %>
                             <br>
                         <% end %>
 

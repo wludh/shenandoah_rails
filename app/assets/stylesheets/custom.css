@@ -310,3 +310,24 @@ div.col-md-3 hr{
 .article{
     padding-left: 20px;
 }
+
+td{
+    border-style:none;
+}
+
+table{
+    border-style: none;
+    border-collapse:collapse;
+}
+
+.decade_link{
+
+}
+
+.year_link{
+    padding-left:15px;
+}
+
+.issue_link{
+    padding-left:30px;
+}

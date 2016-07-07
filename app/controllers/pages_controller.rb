@@ -1,21 +1,51 @@
 class PagesController < ApplicationController
     require 'open-uri'
     require 'date'
+    require 'active_support/core_ext/array/conversions.rb'
     
     # the json api endpoint that you'll be calling.
     ENDPOINT = "http://managementtools4.wlu.edu/REST/Shenandoah.svc"
+
 
     def show
         render template: 'page/#{params[:page]}'
     end
 
     def index
-        # if there are search paramters, call the search function.
-        @articles = search if params.key?(:search)
-        
+
+        # if there are search params, call the search function.
+        if params.key?(:search)
+            @articles = search
+        elsif params.key?(:article_id)
+                @articles = single_issue(:article_id)
+        else
+            "NIGHTMARE"
+        end
+
         # generate the date tree
-        @dates = generate_dates
+        @decades = decades
+        if params.key?(:decade)
+            @years = years_for_decade(params[:decade])
+        end
+        if params.key?(:year)
+            @issues = all_issues_in_a_year(params[:year])
+        end
+        #TODO note: will just reset if you choose year
+        if params.key?(:issue_id)
+            puts "******"
+            puts "******"
+            puts "******"
+            puts params[:issue_id]
+            @issue = single_issue(params[:issue_id])
+            @articles = articles_in_issue(params[:issue_id])
+            puts @articles
+            puts "******"
+            puts "******"
+            puts "******"
+            puts "******"
+        end
         render template: 'pages/index'
+
     end
 
     def about
@@ -33,38 +63,35 @@ class PagesController < ApplicationController
         end
     end
 
-    def parse_json(some_json)
-        # takes the json API and produces articles from it 
-        # should eventually parse some json. but for now it is not.
-        @articles = [{title: 'Test title', pages: '6-11', author: 'An author test', genre: 'Romance', reviews: 'This is a thing I reviewed', comments: 'A test note', volume: '3', issue: '4', date: 'Spring 1954'}, {title: 'Test pages', author: 'An author test', genre: 'Romance', reviews: 'This is a thing I reviewed', volume: '3', issue: '4', date: 'Spring 1954'}]
-        5.times do
-            @articles += @articles
-        end
+    def parse_json(json)
+        # takes the json from the API and produces articles from it 
+
+        @articles = json
         return @articles
     end
 
     def generate_dates
         # this is the slow part. it's hitting every object in the database to pull all the dates.
-        years = []
-        issue_dates = []
-        decades = decades()
-        for decade in decades
-            for year in years_in_decade(decade)
-                years << all_issues_in_a_year(year)
-            end
-        end
-        years = File.open('./lib/assets/dates.txt').readline
-        # years
-        # date = Date.new(1950, 1, 1)
-        # counter = 1 
-        # result = 0
-        # @date_array = []
-        # until result == 2015 do
-        #     result = date.year + counter
-        #     @date_array << (date.year + counter)
-        #     counter += 1
+
+        # to get from the api
+
+        # years = []
+        @decades = decades()
+        # for decade in decades
+        #     for year in years_in_decade(decade)
+        #         years << all_issues_in_a_year(year)
+        #     end
         # end
-        # return @date_array
+
+        # to get from local file
+        years = File.open('./lib/assets/dates.txt').readline
+        years
+
+    end
+
+    def years_for_decade(val)
+        data = years_in_decade(val)
+        data
     end
 
     # queries for the JSON endpoint
@@ -75,13 +102,12 @@ class PagesController < ApplicationController
     end
 
     def all_issues_in_a_year(year)
-        puts "********"
-        puts(fetch_json("/Issues?year=#{year}"))
         fetch_json("/Issues?year=#{year}")
     end
 
     def single_author(author_id)
-        fetch_json("/Authors/#{author_id}")
+        result = fetch_json("/Authors/#{author_id}")
+        "#{result['FirstName']} #{result['MiddleName']} #{result['LastName']}"
     end
 
     def articles_in_issue(issue_id)
@@ -114,19 +140,19 @@ class PagesController < ApplicationController
 
     def author_search(author)
         # you'll need to do a whole lot more integrating the other methods to walk down the data tree once jeff gets back to you.
-        fetch_json("/Articles/Author=#{author}")
+        fetch_json("/Articles?Author=#{author}")
     end
 
     def keyword_search(search)
         # you'll need to do a whole lot more integrating the other methods to walk down the data tree once jeff gets back to you.
-
-        fetch_json("/Articles/Text=#{search}")
+        fetch_json("/Articles?Text=#{search}")
     end
 
     helper_method :generate_dates
     helper_method :parse_json
     helper_method :fetch_json
     helper_method :search
+    helper_method :years_for_decade
     
     # all the JSON API methods
     helper_method :all_articles
@@ -147,4 +173,8 @@ class PagesController < ApplicationController
     # generate models from json.
     # Todo: edit display
     # Todo: date tree thing
+    # TODO: Comments and reviews. where are they showing up in the JSON?
+    # TODO: optimize - the call in the metadata to single_author for each article is super slow. That's the main slow down right now.
+    # TODO: work on caching re: the date tree
+    # TODO: you are working on the date tree.
 end
