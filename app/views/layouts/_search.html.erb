@@ -61,7 +61,7 @@
                     <%= "Vol. " + @issue['Volume'].to_s + ", No. " + @issue['Issue'].to_s + ", " + @issue['Season'].to_s %>
                 </h3>
             <% elsif params.key?(:search) %>
-                <%= @articles.length %> total search results. <%= link_to "clear search", root_path %>
+                <%= @results_length %> total search results. <%= link_to "clear search", root_path %>
             <% end %>
             <% if @articles != nil && (params.key?(:search) || params.key?(:issue_id)) %>
                 <% @articles.each do |article| %>
@@ -108,5 +108,8 @@
                 <% end %>
             <% end %>
         </div>
+<!--         <% if params.key?(:search) %> -->
+            <%= will_paginate @articles %>
+<!--         <% end %> -->
     </div>
 </div>

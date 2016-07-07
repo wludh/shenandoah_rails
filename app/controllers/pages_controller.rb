@@ -22,7 +22,10 @@ class PagesController < ApplicationController
             @articles = articles_in_issue(params[:issue_id])
         elsif params.key?(:search)
             # if there is a search param, search
-            @articles = search
+            api_results = search
+            @articles = api_results.paginate(:page => params[:page], :per_page => 10)
+            @results_length = api_results.length
+            # @num_results = @articles.length
         else
             "NIGHTMARE"
         end
