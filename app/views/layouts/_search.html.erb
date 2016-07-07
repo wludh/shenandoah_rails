@@ -49,12 +49,6 @@
                         <% end %>
                     </tr>
                 <% end %>
-                     <script>
-                        $('.DecadeLink').click(function(){
-                            var decade = Number($( this ).text().slice(0, -1));
-                        });
-                    </script>
-                    <!-- TODO: figure out why in god's name it only works part time if you are loading the JS from another file. Figure out whether you want to pre=load all the dates. or just have them load on clicking. -->
                 </tbody>
             </table>
         </div>
@@ -66,34 +60,36 @@
                 <h3>
                     <%= "Vol. " + @issue['Volume'].to_s + ", No. " + @issue['Issue'].to_s + ", " + @issue['Season'].to_s %>
                 </h3>
+            <% elsif params.key?(:search) %>
+                <%= @articles.length %> total search results. <%= link_to "clear search", root_path %>
             <% end %>
             <% if @articles != nil && (params.key?(:search) || params.key?(:issue_id)) %>
-                <%= @articles.length %> total search results. <%= link_to "clear search", root_path %>
                 <% @articles.each do |article| %>
                     <%= article %>
                      <% if params.key?(:search) %>
+                        <% @issue = single_issue(article['IssueID']) %>
                         <h3>
-                            Vol. <%= article[:volume]%>, No. <%= article[:issue]%>, <%= article[:date]%>
+                            Vol. <%= @issue['Volume']%>, No. <%= @issue['Issue']%>, <%= @issue['Season']%>
                         </h3>
                     <% end %>
-                    <div class="article">
-
+                    
+                        <p class="metadata">
                         <% if article.key?('Title') %>
                             <%= article['Title'] %>
                             <br>
                         <% end %>
 
-                        <% if article.key?('AuthorID') %>
+                        <% if article.key?('AuthorID') && !article['AuthorID'].empty? %>
                             Author: <%= single_author(article['AuthorID'][0]) %>
                             <br>
                         <% end %>
 
-                        <% if article.key?('EndPage') && article.key?('StartPage') %>
+                        <% if (article.key?('EndPage') && article.key?('StartPage')) && article['EndPage'] != 0 %>
                             pp. <%= article['StartPage'].to_s + '-' + article['EndPage'].to_s %>
                             <br>
                         <% end %>
 
-                        <% if article.key?('Genre') %>
+                        <% if !article['Genre'].empty? %>
                             Genre: <%= article['Genre'].to_set.to_a.to_sentence %>
                             <br>
                         <% end %>
@@ -107,7 +103,8 @@
                             Notes: <%= article[:comments]%>
                             <br>
                         <% end %>
-                    </div>
+                    </p>
+                    <hr>
                 <% end %>
             <% end %>
         </div>

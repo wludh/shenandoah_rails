@@ -4,6 +4,7 @@ class PagesController < ApplicationController
     require 'active_support/core_ext/array/conversions.rb'
     
     # the json api endpoint that you'll be calling.
+
     ENDPOINT = "http://managementtools4.wlu.edu/REST/Shenandoah.svc"
 
 
@@ -14,36 +15,31 @@ class PagesController < ApplicationController
     def index
 
         # if there are search params, call the search function.
-        if params.key?(:search)
+        if params.key?(:issue_id)
+            params.delete(:search)
+            # if there is an issue_id, render that single issue
+            @issue = single_issue(params[:issue_id])
+            @articles = articles_in_issue(params[:issue_id])
+        elsif params.key?(:search)
+            # if there is a search param, search
             @articles = search
-        elsif params.key?(:article_id)
-                @articles = single_issue(:article_id)
         else
             "NIGHTMARE"
         end
 
         # generate the date tree
+        # generate the decade tree
         @decades = decades
+
         if params.key?(:decade)
+            # if we have a decade in storage, search for the number of years
             @years = years_for_decade(params[:decade])
         end
         if params.key?(:year)
             @issues = all_issues_in_a_year(params[:year])
         end
         #TODO note: will just reset if you choose year
-        if params.key?(:issue_id)
-            puts "******"
-            puts "******"
-            puts "******"
-            puts params[:issue_id]
-            @issue = single_issue(params[:issue_id])
-            @articles = articles_in_issue(params[:issue_id])
-            puts @articles
-            puts "******"
-            puts "******"
-            puts "******"
-            puts "******"
-        end
+
         render template: 'pages/index'
 
     end
@@ -55,20 +51,14 @@ class PagesController < ApplicationController
     def search
         # right now this will just get the json you need
         if params.key?(:search) and params[:choice] == 'author'
-            return parse_json(author_search(params[:search]))
+            return author_search(params[:search])
         elsif params.key?(:search) and params[:choice] == 'keyword'
-            return parse_json(keyword_search(params[:search]))
+            return keyword_search(params[:search])
         else
             raise "something went wrong with the search" 
         end
     end
 
-    def parse_json(json)
-        # takes the json from the API and produces articles from it 
-
-        @articles = json
-        return @articles
-    end
 
     def generate_dates
         # this is the slow part. it's hitting every object in the database to pull all the dates.
@@ -139,12 +129,10 @@ class PagesController < ApplicationController
     end
 
     def author_search(author)
-        # you'll need to do a whole lot more integrating the other methods to walk down the data tree once jeff gets back to you.
         fetch_json("/Articles?Author=#{author}")
     end
 
     def keyword_search(search)
-        # you'll need to do a whole lot more integrating the other methods to walk down the data tree once jeff gets back to you.
         fetch_json("/Articles?Text=#{search}")
     end
 
