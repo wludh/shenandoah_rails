@@ -65,7 +65,7 @@
             <% end %>
             <% if @articles != nil && (params.key?(:search) || params.key?(:issue_id)) %>
                 <% @articles.each do |article| %>
-                    <%= article %>
+                    <%#= article %>
                      <% if params.key?(:search) %>
                         <% @issue = single_issue(article['IssueID']) %>
                         <h3>
