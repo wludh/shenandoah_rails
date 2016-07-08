@@ -77,19 +77,19 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  client = Dalli::Client.new((ENV["MEMCACHIER_SERVERS"] || "").split(","),
-                           :username => ENV["MEMCACHIER_USERNAME"],
-                           :password => ENV["MEMCACHIER_PASSWORD"],
-                           :failover => true,
-                           :socket_timeout => 1.5,
-                           :socket_failure_delay => 0.2,
-                           :value_max_bytes => 10485760)
-  config.action_dispatch.rack_cache = {
-    :metastore    => client,
-    :entitystore  => client
-  }
-  config.serve_static_assets = true
-  config.static_cache_control = "public, max-age=2592000"
-  config.assets.digest = true
-  config.action_controller.perform_caching = true
+  # client = Dalli::Client.new((ENV["MEMCACHIER_SERVERS"] || "").split(","),
+  #                          :username => ENV["MEMCACHIER_USERNAME"],
+  #                          :password => ENV["MEMCACHIER_PASSWORD"],
+  #                          :failover => true,
+  #                          :socket_timeout => 1.5,
+  #                          :socket_failure_delay => 0.2,
+  #                          :value_max_bytes => 10485760)
+  # config.action_dispatch.rack_cache = {
+  #   :metastore    => client,
+  #   :entitystore  => client
+  # }
+  # config.serve_static_assets = true
+  # config.static_cache_control = "public, max-age=2592000"
+  # config.assets.digest = true
+  # config.action_controller.perform_caching = true
 end
