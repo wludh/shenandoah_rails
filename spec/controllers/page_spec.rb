@@ -14,13 +14,8 @@ describe PagesController do
         end        
 
         it "should connect to the json API" do
-            controller.parse_json
+            controller.fetch_json('/Decades')
             expect(response).to have_http_status(200)
-        end
-
-        it 'has a date tree' do
-            get :index
-            expect(@dates).to exist
         end
     end
 

@@ -6,7 +6,41 @@ describe "GET" 'index' do
         visit root_path
         expect(page).to have_selector('#search-bar')
     end
+
+    it 'has a date tree full of decades' do
+        visit root_path
+        expect(page).to have_selector('.decade_link')
+    end
+
+    it 'has a date tree that unfolds decades to reveal years' do
+        visit root_path
+        click_link '1950s'
+        expect(page).to have_selector('.year_link')
+    end
+
+    it 'has a date tree that unfolds decades to reveal years and years to reveal issues' do
+        visit root_path
+        click_link '1950s'
+        click_link '1950'
+        expect(page).to have_selector('.issue_link')
+    end
+
+    it 'clicking an issue loads a page containing that issue' do
+        visit root_path
+        click_link '1950s'
+        click_link '1950'
+        click_link 'Vol. 1, No. 1, Spring'
+        expect(find('#issue_panel h3')).to have_content('Vol. 1, No. 1, Spring')
+    end
     
+    it 'when clicking on an issue from the date tree, the tree should remain open.' do
+        visit root_path
+        click_link '1950s'
+        click_link '1950'
+        click_link 'Vol. 1, No. 1, Spring'
+        expect(first('.issue_link')).to have_content('Vol. 1, No. 1, Spring')
+    end
+
     it "should store search queries in params" do
         visit root_path
         within '#search-bar' do
