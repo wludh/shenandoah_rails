@@ -20,8 +20,6 @@
         <div id='date_tree'>
             <table cellspacing="0" rules="all" border="1" id="IssueGridView">
                 <tbody>
-                <!-- format is <tr><td><a>decade/year/issues
-                and they're all just listed one after the other, even if logically they are nested. so the first step is to just list all the dates. then make it so that they're all collapsed. then make it so clicking on the outer layer will expose the inner layers. -->
                 <% for decade in @decades%>
                     <tr>
                         <td>
@@ -43,7 +41,7 @@
                                             </td>
                                         </tr>
                                     <% end %>
-                                <%end %>
+                                <% end %>
                             <% end %>
                         <% end %>
                     </tr>
@@ -64,23 +62,14 @@
             <% end %>
             <% if @articles != nil && (params.key?(:search) || params.key?(:issue_id)) %>
                 <% @articles.each do |article| %>
-                    <%#= @issue %>
-                     <% if params.key?(:search) %>
-                        <% @issue = single_issue(article['IssueID']) %>
-                        <h3>
-                            Vol. <%= @issue['Volume']%>, No. <%= @issue['Issue']%>, <%= @issue['Season'] + " " + @issue['Year'].to_s %>
-                        </h3>
-                    <% end %>
-                    
-                        <p class="metadata">
-
+                    <%= generate_issue_info(article) %>
+                    <p class="metadata">
                         <%= generate_title(article) %>
                         <%= generate_author(article) %>
                         <%= generate_page_nums(article) %>
                         <%= generate_genres(article) %>
                         <%= generate_reviews(article) %>
                         <%= generate_notes(article)%>
-
                     </p>
                     <hr>
                 <% end %>

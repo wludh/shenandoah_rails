@@ -156,6 +156,13 @@ class PagesController < ApplicationController
         end
     end
 
+    def generate_issue_info(article)
+        if params.key?(:search)
+            @issue = single_issue(article['IssueID'])
+            ("<h3> Vol. " + @issue['Volume'].to_s + ", No. " + @issue['Issue'].to_s + ", " + @issue['Season'].to_s + " " + @issue['Year'].to_s + "</h3>").html_safe    
+        end
+    end
+
     helper_method :generate_dates
     helper_method :parse_json
     helper_method :fetch_json
@@ -183,6 +190,7 @@ class PagesController < ApplicationController
     helper_method :generate_genres
     helper_method :generate_reviews
     helper_method :generate_notes
+    helper_method :generate_issue_info
 
     # Todo: edit display
     # TODO: Comments and reviews. where are they showing up in the JSON?
