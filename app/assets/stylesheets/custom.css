@@ -317,24 +317,36 @@ td{
 
 table{
     border-style: none;
-    border-collapse:collapse;
-}
-
-.decade_link{
-
+    border-collapse: collapse;
 }
 
 .year_link{
-    padding-left:15px;
+    padding-left: 15px;
 }
 
 .issue_link{
-    padding-left:30px;
+    padding-left: 30px;
 }
 
 .metadata{
-    padding-left:20px;
+    padding-left: 20px;
 }
-.pagination{
-    padding-bottom:80px;
+
+#issue_panel{
+    margin-bottom: 80px;
+}
+
+/* Clean up the print by hiding stuff */
+
+@media print {
+  a[href]:after {
+    content: none !important;
+  }
+
+  img, .pagination, #date_tree, nav, #search, #sticky-footer{
+    display:none;
+  }
+  #subtitle{
+    max-width:800px !important;
+  }
 }

@@ -1,7 +1,7 @@
 <div id="contents">
     <!-- search bar -->
     <div class="col-md-3">
-        <div class="search">
+        <div id="search">
           <%= form_tag root_path, :method => "get", :id => 'search-bar' do %>
             <%= text_field_tag :search, params[:search] %>
             <%= submit_tag "Search", :name => nil %>
@@ -15,37 +15,37 @@
         </div>
 
         <hr>
-        <b>Browse by Issue:</b>
         <!-- date tree -->
         <div id='date_tree'>
+        <b>Browse by Issue:</b>
             <table cellspacing="0" rules="all" border="1" id="IssueGridView">
                 <tbody>
-                <% for decade in @decades%>
-                    <tr>
-                        <td>
-                        <!-- take current params, add decade to it, and create a url for the newl query  -->
-                            <%= link_to(decade.to_s + 's', url_for(params.merge(:decade => decade.to_s)), class: "decade_link") %>
-                        </td>
-                        <% if params[:decade] != nil && params[:decade] == decade.to_s %>
-                            <% for year in @years %>
-                                <tr>
-                                    <td>
-                                        <%= link_to(year.to_s, url_for(params.merge(:year => year.to_s)), class: "year_link") %>
-                                    </td>
-                                </tr>
-                                <% if params[:year] != nil && params[:year] == year.to_s %>
-                                    <% for issue in @issues %>
-                                        <tr>
-                                            <td>
-                                                <%= link_to("Vol. " + issue['Volume'].to_s + ", No. " + issue['Issue'].to_s + ", " + issue['Season'].to_s, url_for(params.merge(:issue_id => issue['ID'].to_s)), class: "issue_link") %>
-                                            </td>
-                                        </tr>
+                    <% for decade in @decades%>
+                        <tr>
+                            <td>
+                            <!-- take current params, add decade to it, and create a url for the new query  -->
+                                <%= link_to(decade.to_s + 's', url_for(params.merge(:decade => decade.to_s)), class: "decade_link") %>
+                            </td>
+                            <% if params[:decade] != nil && params[:decade] == decade.to_s %>
+                                <% for year in @years %>
+                                    <tr>
+                                        <td>
+                                            <%= link_to(year.to_s, url_for(params.merge(:year => year.to_s)), class: "year_link") %>
+                                        </td>
+                                    </tr>
+                                    <% if params[:year] != nil && params[:year] == year.to_s %>
+                                        <% for issue in @issues %>
+                                            <tr>
+                                                <td>
+                                                    <%= link_to("Vol. " + issue['Volume'].to_s + ", No. " + issue['Issue'].to_s + ", " + issue['Season'].to_s, url_for(params.merge(:issue_id => issue['ID'].to_s)), class: "issue_link") %>
+                                                </td>
+                                            </tr>
+                                        <% end %>
                                     <% end %>
                                 <% end %>
                             <% end %>
-                        <% end %>
-                    </tr>
-                <% end %>
+                        </tr>
+                    <% end %>
                 </tbody>
             </table>
         </div>
@@ -58,7 +58,7 @@
                     <%= "Vol. " + @issue['Volume'].to_s + ", No. " + @issue['Issue'].to_s + ", " + @issue['Season'].to_s + " " + @issue['Year'].to_s %>
                 </h3>
             <% elsif params.key?(:search) %>
-                <%= @results_length %> total search results. <%= link_to "clear search", root_path %>
+                <%= @results_length %> total search results for "<%= params[:search] %>". <%= link_to "clear search", root_path %>
             <% end %>
             <% if @articles != nil && (params.key?(:search) || params.key?(:issue_id)) %>
                 <% @articles.each do |article| %>
