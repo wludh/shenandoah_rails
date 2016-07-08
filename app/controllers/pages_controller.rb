@@ -91,7 +91,9 @@ class PagesController < ApplicationController
 
     def fetch_json(query)
         puts(ENDPOINT + query)
-        JSON.load(open(ENDPOINT + query))
+        Rails.cache.fetch([ENDPOINT, query], :expires => 1.hour) do
+            JSON.load(open(ENDPOINT + query))
+        end
     end
 
     def all_issues_in_a_year(year)
