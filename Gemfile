@@ -11,6 +11,7 @@ gem 'will_paginate'
 # Use sqlite3 as the database for Active Record
 
 gem 'twitter-bootstrap-rails'
+gem 'dalli'
 
 group :production do
     gem 'pg'
