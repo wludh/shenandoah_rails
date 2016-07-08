@@ -73,35 +73,14 @@
                     <% end %>
                     
                         <p class="metadata">
-                        <% if article.key?('Title') %>
-                            <%= article['Title'] %>
-                            <br>
-                        <% end %>
 
-                        <% if article.key?('AuthorID') && !article['AuthorID'].empty? %>
-                            Author: <%= single_author(article['AuthorID'][0]) %>
-                            <br>
-                        <% end %>
+                        <%= generate_title(article) %>
+                        <%= generate_author(article) %>
+                        <%= generate_page_nums(article) %>
+                        <%= generate_genres(article) %>
+                        <%= generate_reviews(article) %>
+                        <%= generate_notes(article)%>
 
-                        <% if (article.key?('EndPage') && article.key?('StartPage')) && article['EndPage'] != 0 %>
-                            pp. <%= article['StartPage'].to_s + '-' + article['EndPage'].to_s %>
-                            <br>
-                        <% end %>
-
-                        <% if !article['Genre'].empty? %>
-                            Genre: <%= article['Genre'].to_set.to_a.to_sentence %>
-                            <br>
-                        <% end %>
-
-                        <% if article.key?(:reviews) %>
-                            Reviewed Works: <%= article[:reviews]%>
-                            <br>
-                        <% end %>
-
-                        <% if article.key?(:comments) %>
-                            Notes: <%= article[:comments]%>
-                            <br>
-                        <% end %>
                     </p>
                     <hr>
                 <% end %>

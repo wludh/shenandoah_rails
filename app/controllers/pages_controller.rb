@@ -118,6 +118,44 @@ class PagesController < ApplicationController
         fetch_json("/Articles?Text=#{search}")
     end
 
+    # for manipulating json in view
+
+    def generate_title(article)
+        if article.key?('Title')
+            (article['Title'] + "<br>").html_safe
+        end
+    end
+
+    def generate_author(article)
+        if article.key?('AuthorID') && !article['AuthorID'].empty?
+            ("Author: " + single_author(article['AuthorID'][0]) + "<br>").html_safe
+        end
+    end
+
+    def generate_page_nums(article)
+        if (article.key?('EndPage') && article.key?('StartPage')) && article['EndPage'] != 0
+            ("pp. " + article['StartPage'].to_s + '-' + article['EndPage'].to_s + "<br>").html_safe
+        end
+    end
+
+    def generate_genres(article)
+        if !article['Genre'].empty?
+            ("Genre: " + article['Genre'].to_set.to_a.to_sentence + "<br>").html_safe
+        end
+    end
+
+    def generate_reviews(article)
+        if article.key?(:reviews)
+            ("Reviewed Works: " + article[:reviews] + "<br>").html_safe
+        end
+    end
+
+    def generate_notes(article)
+        if article.key?(:comments)
+            ("Notes: " + article[:comments]+ "<br>").html_safe
+        end
+    end
+
     helper_method :generate_dates
     helper_method :parse_json
     helper_method :fetch_json
@@ -138,13 +176,16 @@ class PagesController < ApplicationController
     helper_method :author_search
     helper_method :keyword_search
 
-    # TODO: query JSON API - this will parse json from a url - http://stackoverflow.com/questions/18581792/ruby-on-rails-and-json-parser-from-url
-    # TODO: load JSON - http://ruby-doc.org/stdlib-2.2.3/libdoc/json/rdoc/JSON.html is the one to parse json.
-    # generate models from json.
+    # all the methods for manipulating the json in the view
+    helper_method :generate_title
+    helper_method :generate_author
+    helper_method :generate_page_nums
+    helper_method :generate_genres
+    helper_method :generate_reviews
+    helper_method :generate_notes
+
     # Todo: edit display
-    # Todo: date tree thing
     # TODO: Comments and reviews. where are they showing up in the JSON?
     # TODO: optimize - the call in the metadata to single_author for each article is super slow. That's the main slow down right now.
-    # TODO: work on caching re: the date tree
-    # TODO: you are working on the date tree.
+
 end
