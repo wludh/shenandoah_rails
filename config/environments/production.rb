@@ -88,5 +88,8 @@ Rails.application.configure do
     :metastore    => client,
     :entitystore  => client
   }
+  config.serve_static_assets = true
   config.static_cache_control = "public, max-age=2592000"
+  config.assets.digest = true
+  config.action_controller.perform_caching = true
 end
