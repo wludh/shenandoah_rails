@@ -72,4 +72,21 @@ describe "GET" 'index' do
         parsed_query = CGI::parse(URI.parse(current_url).query)
         expect(parsed_query['choice']).to have_content('keyword')
     end
+
+    it "should get search results from the API" do
+        visit root_path
+        within '#search-bar' do
+            fill_in 'search', :with => 'Pound'
+        end
+        choose 'choice_author'
+        click_button 'Search'
+        expect(find('#issue_panel')).to have_content('Pound')
+        expect(find('#issue_panel')).to have_selector('.metadata')
+    end
 end
+
+# TODO some of these tests are specific to the dataset for the shenandoah project. So you'll need to abstract them for more general use in other contexts.
+
+    
+    
+    

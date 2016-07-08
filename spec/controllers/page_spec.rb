@@ -17,6 +17,7 @@ describe PagesController do
             controller.fetch_json('/Decades')
             expect(response).to have_http_status(200)
         end
+
     end
 
     describe "GET 'about'" do
@@ -30,10 +31,4 @@ describe PagesController do
             expect(response).to render_template("about")
         end
     end
-
-    it "should parse that JSON"
-    it "should take a search and query the API with it"
-    it "should get dates from the API"
-    it "should get single issues from the API"
-    it "should get search results from the API"
 end
