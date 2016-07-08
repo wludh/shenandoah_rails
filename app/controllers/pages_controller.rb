@@ -7,19 +7,18 @@ class PagesController < ApplicationController
 
     ENDPOINT = "http://managementtools4.wlu.edu/REST/Shenandoah.svc"
 
-
     def show
         render template: 'page/#{params[:page]}'
     end
 
     def index
 
-        # if there are search params, call the search function.
+        # if there are search params, call the search function and ignore the new params.
         if params.key?(:issue_id)
             params.delete(:search)
             # if there is an issue_id, render that single issue
             @issue = single_issue(params[:issue_id])
-            @articles = articles_in_issue(params[:issue_id])
+            @articles = articles_in_issue(params[:issue_id]).paginate(:page => params[:page], :per_page => 10)
         elsif params.key?(:search)
             # if there is a search param, search
             api_results = search
@@ -41,7 +40,6 @@ class PagesController < ApplicationController
         if params.key?(:year)
             @issues = all_issues_in_a_year(params[:year])
         end
-        #TODO note: will just reset if you choose year
 
         render template: 'pages/index'
 
@@ -62,35 +60,14 @@ class PagesController < ApplicationController
         end
     end
 
-
-    def generate_dates
-        # this is the slow part. it's hitting every object in the database to pull all the dates.
-
-        # to get from the api
-
-        # years = []
-        @decades = decades()
-        # for decade in decades
-        #     for year in years_in_decade(decade)
-        #         years << all_issues_in_a_year(year)
-        #     end
-        # end
-
-        # to get from local file
-        years = File.open('./lib/assets/dates.txt').readline
-        years
-
-    end
-
     def years_for_decade(val)
-        data = years_in_decade(val)
-        data
+        years_in_decade(val)
     end
 
     # queries for the JSON endpoint
 
     def fetch_json(query)
-        puts(ENDPOINT + query)
+        # puts(ENDPOINT + query)
         # Rails.cache.fetch([ENDPOINT, query], :expires => 1.hour) do
             JSON.load(open(ENDPOINT + query))
         # end
