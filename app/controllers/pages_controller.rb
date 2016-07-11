@@ -1,7 +1,6 @@
 class PagesController < ApplicationController
     before_action :detect_browser
 
-    private
     def detect_browser
         case request.user_agent
             when /iPhone/i
@@ -215,6 +214,8 @@ class PagesController < ApplicationController
     helper_method :generate_reviews
     helper_method :generate_notes
     helper_method :generate_issue_info
+
+    private :detect_browser
 
     # Todo: edit display
     # TODO: Comments and reviews. where are they showing up in the JSON?
