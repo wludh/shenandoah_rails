@@ -1,19 +1,6 @@
 class PagesController < ApplicationController
     before_action :detect_browser
 
-    def detect_browser
-        case request.user_agent
-            when /iPhone/i
-                request.variant = :phone
-            when /Android/i && /mobile/i
-                request.variant = :phone
-            when /Windows Phone/i
-                request.variant = :phone
-            else
-                request.variant = :none
-        end
-    end
-
     public
     require 'open-uri'
     require 'date'
@@ -186,6 +173,21 @@ class PagesController < ApplicationController
         end
     end
 
+private
+
+    def detect_browser
+        case request.user_agent
+            when /iPhone/i
+                request.variant = :phone
+            when /Android/i && /mobile/i
+                request.variant = :phone
+            when /Windows Phone/i
+                request.variant = :phone
+            else
+                request.variant = :none
+        end
+    end
+
     helper_method :generate_dates
     helper_method :parse_json
     helper_method :fetch_json
@@ -215,7 +217,6 @@ class PagesController < ApplicationController
     helper_method :generate_notes
     helper_method :generate_issue_info
 
-    private :detect_browser
 
     # Todo: edit display
     # TODO: Comments and reviews. where are they showing up in the JSON?
