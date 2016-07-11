@@ -1,20 +1,21 @@
 class PagesController < ApplicationController
     before_action :detect_browser
 
-      def detect_browser
+    private
+    def detect_browser
         case request.user_agent
-          when /iPhone/i
-            request.variant = :phone
-          when /Android/i && /mobile/i
-            request.variant = :phone
-          when /Windows Phone/i
-            request.variant = :phone
-          else
-            request.variant = :none
+            when /iPhone/i
+                request.variant = :phone
+            when /Android/i && /mobile/i
+                request.variant = :phone
+            when /Windows Phone/i
+                request.variant = :phone
+            else
+                request.variant = :none
         end
-      end
+    end
 
-
+    public
     require 'open-uri'
     require 'date'
     require 'active_support/core_ext/array/conversions.rb'
