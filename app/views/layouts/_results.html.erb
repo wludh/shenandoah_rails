@@ -1,0 +1,27 @@
+<!-- results -->
+    
+<div id="issue_panel">
+    <% if params.key?(:issue_id) %>
+        <h3>
+            <%= "Vol. " + @issue['Volume'].to_s + ", No. " + @issue['Issue'].to_s + ", " + @issue['Season'].to_s + " " + @issue['Year'].to_s %>
+        </h3>
+    <% elsif params.key?(:search) %>
+        <%= @results_length %> total search results for "<%= params[:search] %>". <%= link_to "clear search", root_path %>
+    <% end %>
+    <% if @articles != nil && (params.key?(:search) || params.key?(:issue_id)) %>
+        <% @articles.each do |article| %>
+            <%= generate_issue_info(article) %>
+            <p class="metadata">
+                <%= generate_title(article) %>
+                <%= generate_author(article) %>
+                <%= generate_page_nums(article) %>
+                <%= generate_genres(article) %>
+                <%= generate_reviews(article) %>
+                <%= generate_notes(article)%>
+            </p>
+            <hr>
+        <% end %>
+    <%= will_paginate @articles %>
+    <% end %>
+</div>
+

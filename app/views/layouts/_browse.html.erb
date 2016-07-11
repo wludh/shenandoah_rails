@@ -1,0 +1,34 @@
+<!-- date tree -->
+<div id='date_tree'>
+    <b>Browse by Issue:</b>
+    <table cellspacing="0" rules="all" border="1" id="IssueGridView">
+        <tbody>
+            <% for decade in @decades%>
+                <tr>
+                    <td>
+                    <!-- take current params, add decade to it, and create a url for the new query  -->
+                        <%= link_to(decade.to_s + 's', url_for(params.merge(:decade => decade.to_s)), class: "decade_link") %>
+                    </td>
+                    <% if params[:decade] != nil && params[:decade] == decade.to_s %>
+                        <% for year in @years %>
+                            <tr>
+                                <td>
+                                    <%= link_to(year.to_s, url_for(params.merge(:year => year.to_s)), class: "year_link") %>
+                                </td>
+                            </tr>
+                            <% if params[:year] != nil && params[:year] == year.to_s %>
+                                <% for issue in @issues %>
+                                    <tr>
+                                        <td>
+                                            <%= link_to("Vol. " + issue['Volume'].to_s + ", No. " + issue['Issue'].to_s + ", " + issue['Season'].to_s, url_for(params.merge(:issue_id => issue['ID'].to_s)), class: "issue_link") %>
+                                        </td>
+                                    </tr>
+                                <% end %>
+                            <% end %>
+                        <% end %>
+                    <% end %>
+                </tr>
+            <% end %>
+        </tbody>
+    </table>
+</div>
