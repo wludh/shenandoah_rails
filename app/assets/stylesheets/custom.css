@@ -312,6 +312,10 @@ table{
     margin-bottom: 80px;
 }
 
+.col-md-3{
+    min-width: 275px;
+}
+
 /* Clean up the print by hiding stuff */
 
 @media print {
