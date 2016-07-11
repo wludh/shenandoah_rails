@@ -1,0 +1,22 @@
+<div id="subtitle">
+    <!-- Subtitle and branding complete with branding-->
+    <%= image_tag('cover.jpg')%>
+    <div id="text">
+        <a href="http://shenandoahliterary.org/">Shenandoah</a>: The Washington and Lee University Review<br> 
+        <div id="dates">A comprehensive index: Vol. 1, No. 1 (Spring 1950) - </div>
+        <div id="issn">ISSN 0037-3683 (print)<br>
+            ISSN 2332-8134 (online)
+        </div>
+        <div id="beta">Beta</div>
+    </div>
+    <div class="clear"></div>
+</div>
+
+<div id="contents">
+    <div class="col-md-3">
+        <%= render 'layouts/search' %>
+    </div>
+    <div class="col-md-9">
+        <%= render 'layouts/results' %>
+    </div>
+</div>
