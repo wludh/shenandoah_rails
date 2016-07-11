@@ -314,6 +314,7 @@ table{
 
 .col-md-3{
     min-width: 275px;
+    padding-bottom: 80px;
 }
 
 /* Clean up the print by hiding stuff */
