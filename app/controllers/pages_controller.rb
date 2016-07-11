@@ -84,54 +84,63 @@ class PagesController < ApplicationController
     # queries for the JSON endpoint
 
     def fetch_json(query)
-        # puts(ENDPOINT + query)
-        # Rails.cache.fetch([ENDPOINT, query], :expires => 1.hour) do
-            JSON.load(open(ENDPOINT + query))
-        # end
+        # query the JSON API using the queries provided below
+        JSON.load(open(ENDPOINT + query))
     end
 
     def all_issues_in_a_year(year)
+        # get all issues in a year
         fetch_json("/Issues?year=#{year}")
     end
 
     def single_author(author_id)
+        # get a single author and format the name accordingly
         result = fetch_json("/Authors/#{author_id}")
         "#{result['FirstName']} #{result['MiddleName']} #{result['LastName']}"
     end
 
     def articles_in_issue(issue_id)
+        # get all the articles for a single issue
         fetch_json("/Issues/#{issue_id}/Articles")
     end
 
     def author_for_single_article(article_id)
+        # get the author of a single article
         fetch_json("/Articles/#{article_id}/Authors")
     end
 
     def decades
+        # get all the decades that the journal has been running
         fetch_json("/Decades")
     end
 
     def single_article(article_id)
+        # get a single article's data
         fetch_json("/Articles/#{article_id}")
     end
 
     def years_in_decade(decade)
+        # get all the years in each decade tha the journal published something
         fetch_json("/Years/#{decade}")
     end
 
     def all_articles
+        # get all the issues and their associated articles
         fetch_json("/Issues")
     end
 
     def single_issue(issue_id)
+        # get a single issue
         fetch_json("/Issues/#{issue_id}")
     end
 
     def author_search(author)
+        # search for an author
         fetch_json("/Articles?Author=#{author}")
     end
 
     def keyword_search(search)
+        # search for a keyword
         fetch_json("/Articles?Text=#{search}")
     end
 
@@ -210,7 +219,6 @@ private
     helper_method :search
     
     # all the JSON API methods
-    helper_method :all_articles
     helper_method :all_issues_in_a_year
     helper_method :single_author
     helper_method :articles_in_issue
@@ -232,8 +240,6 @@ private
     helper_method :generate_notes
     helper_method :generate_issue_info
 
-
-    # Todo: edit display
     # TODO: Comments and reviews. where are they showing up in the JSON?
 
 end
