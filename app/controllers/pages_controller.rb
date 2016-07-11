@@ -29,7 +29,12 @@ class PagesController < ApplicationController
             @results_length = api_results.length
             # @num_results = @articles.length
         else
-            "NIGHTMARE"
+            # default search setting is set here
+            params[:search] = 'Shenandoah'
+            params[:choice] = 'keyword'
+            api_results = search
+            @articles = api_results.paginate(:page => params[:page], :per_page => 10)
+            @results_length = api_results.length
         end
 
         # generate the date tree
@@ -128,45 +133,52 @@ class PagesController < ApplicationController
         fetch_json("/Articles?Text=#{search}")
     end
 
-    # for manipulating json in view
+    # for manipulating json in view. are called from the view at app/views/layouts/_results.html.erb
 
     def generate_title(article)
+        # check to see if an article has a title. if it does, render the title followed by a line break. Note that all of these functions include a line break.
         if article.key?('Title')
             (article['Title'] + "<br>").html_safe
         end
     end
 
     def generate_author(article)
+        # check to see if an article has an author id associated with it and that it is not an empty field. If it meets both those requirements, query the json api to get the author's information.
         if article.key?('AuthorID') && !article['AuthorID'].empty?
             ("Author: " + single_author(article['AuthorID'][0]) + "<br>").html_safe
         end
     end
 
     def generate_page_nums(article)
+        # check to see if the article has page numbers and to see if they do not end on page 0 (how the database currently identifies internet articles.)
         if (article.key?('EndPage') && article.key?('StartPage')) && article['EndPage'] != 0
             ("pp. " + article['StartPage'].to_s + '-' + article['EndPage'].to_s + "<br>").html_safe
         end
     end
 
     def generate_genres(article)
+        # check to see if an article has genres. If so, take them from json, collapse repeated genres into a set of unique genre keywords, and output it as a sentence - for example '……, and poetry'
         if !article['Genre'].empty?
             ("Genre: " + article['Genre'].to_set.to_a.to_sentence + "<br>").html_safe
         end
     end
 
     def generate_reviews(article)
+        # check to see if an article has genres. If so, output them.
         if article.key?(:reviews)
             ("Reviewed Works: " + article[:reviews] + "<br>").html_safe
         end
     end
 
     def generate_notes(article)
+        # check to see if an article has comments. If so, render them.
         if article.key?(:comments)
             ("Notes: " + article[:comments]+ "<br>").html_safe
         end
     end
 
     def generate_issue_info(article)
+        # generate the issue header for an article when searching. In the format: Vol. #, No. #, Season Year
         if params.key?(:search)
             @issue = single_issue(article['IssueID'])
             ("<h3> Vol. " + @issue['Volume'].to_s + ", No. " + @issue['Issue'].to_s + ", " + @issue['Season'].to_s + " " + @issue['Year'].to_s + "</h3>").html_safe    
@@ -176,6 +188,7 @@ class PagesController < ApplicationController
 private
 
     def detect_browser
+        # a private method that checks which browser a user is using to acces the site. using this, we can then call a special partial for phone users.
         case request.user_agent
             when /iPhone/i
                 request.variant = :phone
@@ -188,6 +201,7 @@ private
         end
     end
 
+    # all the helper methods that are used to generate the view.
     helper_method :generate_dates
     helper_method :parse_json
     helper_method :fetch_json
@@ -220,6 +234,5 @@ private
 
     # Todo: edit display
     # TODO: Comments and reviews. where are they showing up in the JSON?
-    # TODO: optimize - the call in the metadata to single_author for each article is super slow. That's the main slow down right now.
 
 end
