@@ -1,3 +1,5 @@
+<!-- index page seen by everyone else -->
+
 <div id="subtitle">
     <!-- Subtitle and branding complete with branding-->
     <%= image_tag('cover.jpg')%>
@@ -14,6 +16,7 @@
 
 <div id="contents">
     <div class="col-md-3">
+    <!-- since this is the page for non-phone users, render search results and browse tree. -->
         <%= render 'layouts/search' %>
         <%= render 'layouts/browse' %>
     </div>

@@ -2,16 +2,16 @@
 <!-- search bar -->
 
 <div id="search">
-  <%= form_tag root_path, :method => "get", :id => 'search-bar' do %>
-    <%= text_field_tag :search, params[:search] %>
-    <%= submit_tag "Search", :name => nil %>
-    <div class="clear"></div>
-    <label for='choice'>Search by:</label>
-    <%= radio_button_tag 'choice', 'author', params[:choice] == 'author' || params[:choice] == nil %>
-    <%= 'Author'.humanize %>
-    <%= radio_button_tag 'choice', 'keyword', params[:choice] == 'keyword' %>
-    <%= 'Keywords'.humanize %>
-  <% end %>
+    <%= form_tag root_path, :method => "get", :id => 'search-bar' do %>
+        <%= text_field_tag :search, params[:search] %>
+        <%= submit_tag "Search", :name => nil %>
+        <div class="clear"></div>
+        <label for='choice'>Search by:</label>
+        <%= radio_button_tag 'choice', 'author', params[:choice] == 'author' || params[:choice] == nil %>
+        <%= 'Author'.humanize %>
+        <%= radio_button_tag 'choice', 'keyword', params[:choice] == 'keyword' %>
+        <%= 'Keywords'.humanize %>
+    <% end %>
 </div>
 
 <hr>

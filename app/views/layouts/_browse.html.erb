@@ -1,14 +1,16 @@
-<!-- date tree -->
+<!-- date tree for browsing. this works by covertly reloading the current page each time, but modifying the URL params so that it changes slightly each time. we start out with just a list of decades from the api. clicking on a decade will tell the site to reload with that decade's years unfolded. same thing for issues: click an issue and it reloads with the new information for issues. currently only able to keep one nesting open at a time, because it resets the params with each click. -->
 <div id='date_tree'>
     <b>Browse by Issue:</b>
     <table cellspacing="0" rules="all" border="1" id="IssueGridView">
         <tbody>
+            <!-- for every decade, create a table cell with a link to unfold that decade. -->
             <% for decade in @decades%>
                 <tr>
                     <td>
-                    <!-- take current params, add decade to it, and create a url for the new query  -->
+                    <!-- take current params, add decade to it, create a url for the new query, and go to that link. same process continues for other link_to tags below -->
                         <%= link_to(decade.to_s + 's', url_for(params.merge(:decade => decade.to_s)), class: "decade_link") %>
                     </td>
+                    <!-- a decade has been selected, pull out and list the years for that decade. -->
                     <% if params[:decade] != nil && params[:decade] == decade.to_s %>
                         <% for year in @years %>
                             <tr>
@@ -16,6 +18,7 @@
                                     <%= link_to(year.to_s, url_for(params.merge(:year => year.to_s)), class: "year_link") %>
                                 </td>
                             </tr>
+                            <!-- if a year has been selected, pull out, format, and render the issue information for those years. -->
                             <% if params[:year] != nil && params[:year] == year.to_s %>
                                 <% for issue in @issues %>
                                     <tr>

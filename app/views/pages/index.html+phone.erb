@@ -1,5 +1,6 @@
+<!-- special partial imported only for phone users -->
 <div id="subtitle">
-    <!-- Subtitle and branding complete with branding-->
+    <!-- Subtitle and branding -->
     <%= image_tag('cover.jpg')%>
     <div id="text">
         <a href="http://shenandoahliterary.org/">Shenandoah</a>: The Washington and Lee University Review<br> 
@@ -13,6 +14,7 @@
 </div>
 
 <div id="contents">
+    <!-- render only search and search results for phone users. -->
     <div class="col-md-3">
         <%= render 'layouts/search' %>
     </div>
