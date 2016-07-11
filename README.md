@@ -40,7 +40,7 @@ The site (and rails more genreally) generates by combining a number of pieces or
 /spec/controllers/page_spec.rb and /spec/features/index_spec.rb - contain the tests for the site. When upgrading, you can run 
 
 ```bash
-rspec spec
+$ rspec spec
 ```
 
 to make sure that nothing has broken. The tests should point you in the right direction. And changing to a new API will automattically break a lot of the tests, and these tests can help get you started to make sure you are rebuilding things correctly.
