@@ -7,7 +7,7 @@ Front-end interface for searching the an index of the Shenandoah Literary Journa
 * /Gemfile - contains all dependencies and ruby libraries that are loaded.
 
 ## Logic
-/app/controllers/pages_controller.rb - the master file for all the logic underlying the site. API endpoint, available JSON queries, and logic for providing data to the site's pages are defined here. Besides all that, it also contains the index method, which is where the index page gets all of its data from everything else. So if you define a variable there, it will be available to the index page's view.
+* /app/controllers/pages_controller.rb - the master file for all the logic underlying the site. API endpoint, available JSON queries, and logic for providing data to the site's pages are defined here. Besides all that, it also contains the index method, which is where the index page gets all of its data from everything else. So if you define a variable there, it will be available to the index page's view.
 
 ## Views
 
@@ -31,7 +31,7 @@ The site (and rails more genreally) generates by combining a number of pieces or
 * /app/views/layouts/_search.html.erb - partial containing the search form.
 * /app/views/layouts/_results.html.erb - partial containing the results
 
-#$Links
+## Links
 
 * /config/routes.rb - contains all of the links for the project (expect for those generated dynamically on the fly using parameters from the browse tree).
 
