@@ -1,13 +1,14 @@
 class PagesController < ApplicationController
+    # check a user's browser before you do anything.
     before_action :detect_browser
 
     public
+    # import libraries to extend some basic functions: parsing json, parsing dates, and paginating things not associated with a model.
     require 'open-uri'
     require 'date'
     require 'active_support/core_ext/array/conversions.rb'
     
     # the json api endpoint that you'll be calling.
-
     ENDPOINT = "http://managementtools4.wlu.edu/REST/Shenandoah.svc"
 
     def show
@@ -16,67 +17,68 @@ class PagesController < ApplicationController
 
     def index
 
-        # if there are search params, call the search function and ignore the new params.
+        # if there is an issue_id, the user is browsing. Call
         if params.key?(:issue_id)
+            # if there is an issue_id, render that single issue and act like there aren't search params. we default to browse if that is being used.
             params.delete(:search)
-            # if there is an issue_id, render that single issue
+            # get issue information based on the issue_id
             @issue = single_issue(params[:issue_id])
+            # load the articles for that issue.
             @articles = articles_in_issue(params[:issue_id]).paginate(:page => params[:page], :per_page => 10)
         elsif params.key?(:search)
-            # if there is a search param, search
+            # if there is a search param, search for them using the search method defined below.
             api_results = search
+            # paginate those results using the default paramaters provided here
             @articles = api_results.paginate(:page => params[:page], :per_page => 10)
+            # store the total number of search results.
             @results_length = api_results.length
-            # @num_results = @articles.length
         else
-            # default search setting is set here
+            # default to a keyword search for 'Shenandoah'
             params[:search] = 'Shenandoah'
             params[:choice] = 'keyword'
+            # then paginate and store the length as above.
             api_results = search
             @articles = api_results.paginate(:page => params[:page], :per_page => 10)
             @results_length = api_results.length
         end
 
-        # generate the date tree
-        # generate the decade tree
+        # generate the decade tree by calling the decades method defined below.
         @decades = decades
 
         if params.key?(:decade)
-            # if we have a decade in storage, search for the number of years
-            @years = years_for_decade(params[:decade])
+            # if we have a decade in storage, search for the number of years for that decade.
+            @years = years_in_decade(params[:decade])
         end
         if params.key?(:year)
+            # if we have a year in storage, search for the number of issues in that year.
             @issues = all_issues_in_a_year(params[:year])
         end
 
         respond_to do |format|
+            # finally, now that you have all the data you need, render the view. phone's get a special view that excludes the browse tree. everyone else gets a search bar and browse tree.
             format.html do |variant|
-            variant.phone 
-            variant.none { render template: 'pages/index' }
+                variant.phone 
+                variant.none { render template: 'pages/index' }
+            end
         end
-        end
-
-        # render template: 'pages/index'
 
     end
 
     def about
+        # render the about page.
         render template: 'pages/about'
     end
 
     def search
-        # right now this will just get the json you need
+        # get the json from the API endpoint
         if params.key?(:search) and params[:choice] == 'author'
             return author_search(params[:search])
         elsif params.key?(:search) and params[:choice] == 'keyword'
             return keyword_search(params[:search])
         else
+            # the error message to show the user if something wonky happened
             raise "something went wrong with the search" 
         end
-    end
-
-    def years_for_decade(val)
-        years_in_decade(val)
     end
 
     # queries for the JSON endpoint
@@ -206,7 +208,6 @@ private
     helper_method :parse_json
     helper_method :fetch_json
     helper_method :search
-    helper_method :years_for_decade
     
     # all the JSON API methods
     helper_method :all_articles
