@@ -1,4 +1,20 @@
 class PagesController < ApplicationController
+    before_action :detect_browser
+
+      def detect_browser
+        case request.user_agent
+          when /iPhone/i
+            request.variant = :phone
+          when /Android/i && /mobile/i
+            request.variant = :phone
+          when /Windows Phone/i
+            request.variant = :phone
+          else
+            request.variant = :none
+        end
+      end
+
+
     require 'open-uri'
     require 'date'
     require 'active_support/core_ext/array/conversions.rb'
@@ -41,14 +57,14 @@ class PagesController < ApplicationController
             @issues = all_issues_in_a_year(params[:year])
         end
 
-        respond_to do |format|
-            format.html do |variant|
-            variant.phone { render html: "pages/index.phone" }
-            variant.none { render template: 'pages/index' }
-        end
-        end
+        # respond_to do |format|
+        #     format.html do |variant|
+        #     variant.phone { render html: "pages/index.phone" }
+        #     variant.none { render template: 'pages/index' }
+        # end
+        # end
 
-        # render template: 'pages/index'
+        render template: 'pages/index'
 
     end
 
