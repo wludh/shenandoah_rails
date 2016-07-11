@@ -41,7 +41,14 @@ class PagesController < ApplicationController
             @issues = all_issues_in_a_year(params[:year])
         end
 
-        render template: 'pages/index'
+        respond_to do |format|
+            format.html do |variant|
+            variant.phone { render html: "pages/index.phone" }
+            variant.none { render template: 'pages/index' }
+        end
+        end
+
+        # render template: 'pages/index'
 
     end
 
