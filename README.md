@@ -13,19 +13,25 @@ Front-end interface for searching the an index of the Shenandoah Literary Journa
 
 The site (and rails more genreally) generates by combining a number of pieces or **partials** of files located in /app/views/layouts - so you'll need to know where the various pieces are. Much of rails consists of just knowing where to look to modify the particular piece of the site that you're interested in.
 
+**Template-level elements**
+
 * /app/views/application.html.erb - outermost shell for the site that imports the other various pieces. Nav and footer are imported by default, and then, in the middle, it will stick in whatever particular page the user happens to be on.
 * /app/views/layouts/_nav.html.erb - imported on every page, contains the header information including references to stylesheets, etc.
-* /app/views/layouts/_footer.html.erb - imported on every page, contains the footer for the site.  
+* /app/views/layouts/_footer.html.erb - imported on every page, contains the footer for the site.
 
-
-* /app/views/layouts/_browse.html.erb - the partial containing the browse tree.
-* /app/views/layouts/_search.html.erb - partial containing the search form.
-* /app/views/layouts/_results.html.erb - partial containing the results  
-
+**Page-level elements**
 
 * /app/views/about.html.erb - the about page
 * /app/views/index.html.erb - the index page. by default imports the browse tree, search form, and results sections.
 * /app/views/index.html+phone.erb - special index page shown only to phone users. yanks out the browse tree because it was not particularly responsive and making the site unusable on phones.
+
+**Individual components for index page**
+
+* /app/views/layouts/_browse.html.erb - the partial containing the browse tree.
+* /app/views/layouts/_search.html.erb - partial containing the search form.
+* /app/views/layouts/_results.html.erb - partial containing the results
+
+
 
 * /config/routes.rb - contains all of the links for the project (expect for those generated dynamically on the fly using parameters from the browse tree).
 
