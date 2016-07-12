@@ -57,7 +57,7 @@ class PagesController < ApplicationController
         respond_to do |format|
             # finally, now that you have all the data you need, render the view. phone's get a special view that excludes the browse tree. everyone else gets a search bar and browse tree.
             format.html do |variant|
-                variant.phone 
+                variant.phone { phone_setup }
                 variant.none { render template: 'pages/index' }
             end
         end
@@ -78,6 +78,18 @@ class PagesController < ApplicationController
         else
             # the error message to show the user if something wonky happened
             raise "something went wrong with the search" 
+        end
+    end
+
+    def phone_setup
+        # called to populate the browse tree for mobile visitors.
+        @dropdown_issues = all_articles
+        @issue_hashes = {}
+        @issue_array = []
+        for issue in @dropdown_issues
+            puts issue['ID']
+            @issue_array << "Vol. #{issue['Volume'].to_s}, No. #{issue['IssueLabel']}, #{issue['Season']} #{issue['Year'].to_s}"
+            @issue_hashes["Vol. #{issue['Volume'].to_s}, No. #{issue['IssueLabel']}, #{issue['Season']} #{issue['Year'].to_s}"] = issue['ID']
         end
     end
 

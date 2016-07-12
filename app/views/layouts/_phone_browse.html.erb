@@ -1,0 +1,5 @@
+
+
+<%= form_tag root_path, :method => "post", :id => 'select_issue_form' do %>
+  <p><%= select_tag 'issue_id', options_for_select(@issue_array, @issue_hashes[:selected] => params[:issue_id]), :prompt => 'Select Issue', :id => 'select_issue' %> </p>
+ <% end %>

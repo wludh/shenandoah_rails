@@ -37,7 +37,7 @@ The site (and rails more genreally) generates by combining a number of pieces or
 
 ## Testing
 
-/spec/controllers/page_spec.rb and /spec/features/index_spec.rb - contain the tests for the site. When upgrading, you can run 
+* /spec/controllers/page_spec.rb and /spec/features/index_spec.rb - contain the tests for the site. When upgrading, you can run 
 
 ```bash
 $ rspec spec
