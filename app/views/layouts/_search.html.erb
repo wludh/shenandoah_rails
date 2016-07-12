@@ -4,7 +4,7 @@
 <div id="search">
     <%= form_tag root_path, :method => "get", :id => 'search-bar' do %>
         <%= text_field_tag :search, params[:search] %>
-        <%= submit_tag "Search", :name => nil %>
+        <%= submit_tag "Search", :name => nil, :id => 'search_button' %>
         <div class="clear"></div>
         <label for='choice'>Search by:</label>
         <%= radio_button_tag 'choice', 'author', params[:choice] == 'author' || params[:choice] == nil %>
@@ -13,5 +13,11 @@
         <%= 'Keywords'.humanize %>
     <% end %>
 </div>
-
+<% if params.key?(:search) && !params.key?(:issue_id) %>
+    <!-- if no issue_id, we're not browsing. if search params exist, we're searching. so show the results of the search -->
+        <%= @results_length %> total search results for "<%= params[:search] %>". <br>
+        <%= link_to "clear search", root_path %>
+<% else %>
+    
+<% end %>
 <hr>

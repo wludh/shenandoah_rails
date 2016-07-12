@@ -26,6 +26,7 @@ class PagesController < ApplicationController
             # load the articles for that issue.
             @articles = articles_in_issue(params[:issue_id]).paginate(:page => params[:page], :per_page => 10)
         elsif params.key?(:search)
+            params.delete(:issue_id)
             # if there is a search param, search for them using the search method defined below.
             api_results = search
             # paginate those results using the default paramaters provided here
@@ -34,12 +35,11 @@ class PagesController < ApplicationController
             @results_length = api_results.length
         else
             # default to a keyword search for 'Shenandoah'
-            params[:search] = 'Shenandoah'
-            params[:choice] = 'keyword'
+            params[:issue_id] = '1524'
             # then paginate and store the length as above.
-            api_results = search
-            @articles = api_results.paginate(:page => params[:page], :per_page => 10)
-            @results_length = api_results.length
+            @issue = single_issue(params[:issue_id])
+            # load the articles for that issue.
+            @articles = articles_in_issue(params[:issue_id]).paginate(:page => params[:page], :per_page => 10)
         end
 
         # generate the decade tree by calling the decades method defined below.
@@ -197,9 +197,12 @@ class PagesController < ApplicationController
         end
     end
 
-    def generate_issue_info(article)
-        # generate the issue header for an article when searching. In the format: Vol. #, No. #, Season Year
-        if params.key?(:search)
+    def generate_issue_info(article, first=false)
+        # generate the issue header for an article when searching. In the format: Vol. #, No. #, Season Year. with special style if working with the first header.
+        if params.key?(:search) && first
+            @issue = single_issue(article['IssueID'])
+            ("<h3 id='issue_header'> Vol. " + @issue['Volume'].to_s + ", No. " + @issue['Issue'].to_s + ", " + @issue['Season'].to_s + " " + @issue['Year'].to_s + "</h3>").html_safe 
+        else
             @issue = single_issue(article['IssueID'])
             ("<h3> Vol. " + @issue['Volume'].to_s + ", No. " + @issue['Issue'].to_s + ", " + @issue['Season'].to_s + " " + @issue['Year'].to_s + "</h3>").html_safe    
         end

@@ -193,8 +193,9 @@ body{
     display:inline;
 }
 #subtitle{
-    padding-top: 70px;
-    padding-bottom: 15px;
+    margin-top: 50px;
+    padding-top: 50px;
+    padding-bottom: 50px;
     margin-left: auto;
     margin-right: auto;
     max-width: 521px;
@@ -277,9 +278,16 @@ div.col-md-3 hr{
 
 }
 
-@media(max-width: 500px){
+@media(max-width: 600px){
     #sticky-footer{
         display: none;
+    }
+    .col-md-3{
+        padding-bottom: 0px !important;
+    }
+    #subtitle{
+        padding-bottom: 20px;
+        padding-top: 20px;
     }
 }
 
@@ -334,4 +342,12 @@ table{
 
 select{
     max-width:295px;
+}
+
+#search_button{
+    padding-top: 3px;
+}
+
+#issue_header{
+    margin-top: 0px;
 }
