@@ -84,12 +84,9 @@ class PagesController < ApplicationController
     def phone_setup
         # called to populate the browse tree for mobile visitors.
         @dropdown_issues = all_articles
-        @issue_hashes = {}
         @issue_array = []
         for issue in @dropdown_issues
-            puts issue['ID']
-            @issue_array << "Vol. #{issue['Volume'].to_s}, No. #{issue['IssueLabel']}, #{issue['Season']} #{issue['Year'].to_s}"
-            @issue_hashes["Vol. #{issue['Volume'].to_s}, No. #{issue['IssueLabel']}, #{issue['Season']} #{issue['Year'].to_s}"] = issue['ID']
+            @issue_array << ["Vol. #{issue['Volume'].to_s}, No. #{issue['IssueLabel']}, #{issue['Season']} #{issue['Year'].to_s}", issue['ID']]
         end
     end
 
