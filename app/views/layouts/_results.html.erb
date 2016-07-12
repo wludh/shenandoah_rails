@@ -10,6 +10,7 @@
     <!-- for each article, generate the metadata for that article -->
     <% if @articles != nil && (params.key?(:search) || params.key?(:issue_id)) %>
         <% @articles.each_with_index do |article, index| %>
+        <%= article %>
             <!-- generate the issue information for the article. see app/controllers/pages_controller.rb for more info -->
             <% if params.key?(:search) && index == 0%>
                 <!-- if it's the first issue, generate different styling -->

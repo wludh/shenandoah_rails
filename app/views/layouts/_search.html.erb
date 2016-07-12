@@ -18,7 +18,7 @@
         <%= @results_length %> total search results for "<%= params[:search] %>". <br>
         <%= link_to "Clear Search", root_path %>
 <% else %>
-    <%= "Browsing Vol. " + @issue['Volume'].to_s + ", No. " + @issue['Issue'].to_s + ", " + @issue['Season'].to_s + " " + @issue['Year'].to_s %> <br>
+    <%= "Vol. " + @issue['Volume'].to_s + ", No. " + @issue['Issue'].to_s + ", " + @issue['Season'].to_s + " " + @issue['Year'].to_s %> <br>
     <%= link_to "Clear", root_path %>
 <% end %>
 <hr>

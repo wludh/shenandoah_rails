@@ -94,6 +94,7 @@ class PagesController < ApplicationController
 
     def fetch_json(query)
         # query the JSON API using the queries provided below
+        puts(ENDPOINT + query)
         JSON.load(open(ENDPOINT + query))
     end
 
@@ -185,15 +186,15 @@ class PagesController < ApplicationController
 
     def generate_reviews(article)
         # check to see if an article has genres. If so, output them.
-        if article.key?(:reviews)
-            ("Reviewed Works: " + article[:reviews] + "<br>").html_safe
+        if article.key?('ReviewedWorks') && article['ReviewedWorks'] != nil && !article['ReviewedWorks'].empty?
+            ("Reviewed Works: " + article['ReviewedWorks'].to_sentence + "<br>").html_safe
         end
     end
 
     def generate_notes(article)
         # check to see if an article has comments. If so, render them.
-        if article.key?(:comments)
-            ("Notes: " + article[:comments]+ "<br>").html_safe
+        if article.key?('Comments') && article['Comments'] != nil && !article['Comments'].empty?
+            ("Notes: " + article['Comments'].to_sentence + "<br>").html_safe
         end
     end
 
