@@ -331,3 +331,7 @@ table{
     max-width:800px !important;
   }
 }
+
+select{
+    max-width:295px;
+}
