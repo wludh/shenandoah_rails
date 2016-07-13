@@ -1,6 +1,6 @@
 
 <b>Browse by Issue</b>
 <%= form_tag root_path, :method => "get", :issue_id => 'select_issue_form' do %>
-  <p><%= select_tag 'issue_id', options_for_select(@issue_array, "1524"), :id => 'select_issue_form' %> </p>
+  <p><%= select_tag :issue_id, options_for_select(@issue_array, :selected => params[:issue_id]), :id => 'select_issue_form' %> </p>
   <%= submit_tag('Go') %>
  <% end %>
