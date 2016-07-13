@@ -167,7 +167,12 @@ class PagesController < ApplicationController
     def generate_author(article)
         # check to see if an article has an author id associated with it and that it is not an empty field. If it meets both those requirements, query the json api to get the author's information.
         if article.key?('AuthorID') && !article['AuthorID'].empty?
-            ("Author: " + single_author(article['AuthorID'][0]) + "<br>").html_safe
+            authors_array = article['AuthorID'].to_set.to_a
+            names_array = []
+            for author_id in authors_array
+                names_array << single_author(author_id)
+            end
+            (("Author(s): " + names_array.to_sentence) + "<br>").html_safe
         end
     end
 
@@ -188,14 +193,14 @@ class PagesController < ApplicationController
     def generate_reviews(article)
         # check to see if an article has genres. If so, output them.
         if article.key?('ReviewedWorks') && article['ReviewedWorks'] != nil && !article['ReviewedWorks'].empty?
-            ("Reviewed Works: " + article['ReviewedWorks'].to_sentence + "<br>").html_safe
+            ("Reviewed Works: " + article['ReviewedWorks'].to_set.to_a.to_sentence + "<br>").html_safe
         end
     end
 
     def generate_notes(article)
         # check to see if an article has comments. If so, render them.
         if article.key?('Comments') && article['Comments'] != nil && !article['Comments'].empty?
-            ("Notes: " + article['Comments'].to_sentence + "<br>").html_safe
+            ("Notes: " + article['Comments'].to_set.to_a.to_sentence + "<br>").html_safe
         end
     end
 
