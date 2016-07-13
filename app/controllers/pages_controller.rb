@@ -94,7 +94,8 @@ class PagesController < ApplicationController
 
     def fetch_json(query)
         # query the JSON API using the queries provided below
-        puts(ENDPOINT + query)
+        # uncomment next line to see the queries being sent to the api in the console. useful for debugging.
+        # puts(ENDPOINT + query)
         JSON.load(open(ENDPOINT + query))
     end
 
