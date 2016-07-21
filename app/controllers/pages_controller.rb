@@ -5,7 +5,7 @@ class PagesController < ApplicationController
     
     # the json api endpoint that you'll be calling.
 
-    ENDPOINT = "http://managementtools4.wlu.edu/REST/Shenandoah.svc"
+    ENDPOINT = "https://managementtools4.wlu.edu/REST/Shenandoah.svc"
 
     def show
         render template: 'page/#{params[:page]}'
