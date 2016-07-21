@@ -1,0 +1,39 @@
+<!-- results -->
+    
+<div id="issue_panel">
+    <% if params.key?(:issue_id) && !params.key?(:search) %>
+    <!-- generate an issue header when browsing -->
+        <h3 id="issue_header">
+            <%= "Vol. " + @issue['Volume'].to_s + ", No. " + @issue['Issue'].to_s + ", " + @issue['Season'].to_s + " " + @issue['Year'].to_s %>
+        </h3>
+    <% end %>
+    <!-- for each article, generate the metadata for that article -->
+    <% if @articles != nil && (params.key?(:search) || params.key?(:issue_id)) %>
+        <% @articles.each_with_index do |article, index| %>
+        <!-- uncomment next line to see a dump of each article's results from the API. Useful for debugging. -->
+        <%#= article %>
+            <!-- generate the issue information for the article. see app/controllers/pages_controller.rb for more info -->
+            <% if params.key?(:search) && index == 0%>
+                <!-- if it's the first issue, generate different styling -->
+                <%= generate_issue_info(article, true) %>
+            <% elsif params.key?(:search) %>
+                <%= generate_issue_info(article) %>
+            <% else %>
+                <% puts "issue browsing" %>
+            <% end %>
+            <p class="metadata">
+            <!-- see app/controllers/pages_controller.rb for information on how the metadata for an article is getting populated here. -->
+                <%= generate_title(article) %>
+                <%= generate_author(article) %>
+                <%= generate_page_nums(article) %>
+                <%= generate_genres(article) %>
+                <%= generate_reviews(article) %>
+                <%= generate_notes(article)%>
+            </p>
+            <hr>
+        <% end %>
+        <!-- create the pagination links -->
+    <%= will_paginate @articles %>
+    <% end %>
+</div>
+

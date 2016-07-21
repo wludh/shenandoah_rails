@@ -18,8 +18,6 @@ gem 'rack-cache'
 gem 'kgio'
 gem 'memcachier'
 
-gem 'rails-perftest'
-gem 'ruby-prof'
 
 group :production do
     gem 'pg'
